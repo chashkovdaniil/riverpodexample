@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$CounterState {
-  int get counterValue => throw _privateConstructorUsedError;
+  int get pageIndex => throw _privateConstructorUsedError;
+  List<int> get list => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $CounterStateCopyWith<CounterState> get copyWith =>
@@ -29,7 +30,7 @@ abstract class $CounterStateCopyWith<$Res> {
           CounterState value, $Res Function(CounterState) then) =
       _$CounterStateCopyWithImpl<$Res, CounterState>;
   @useResult
-  $Res call({int counterValue});
+  $Res call({int pageIndex, List<int> list});
 }
 
 /// @nodoc
@@ -45,13 +46,18 @@ class _$CounterStateCopyWithImpl<$Res, $Val extends CounterState>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? counterValue = null,
+    Object? pageIndex = null,
+    Object? list = null,
   }) {
     return _then(_value.copyWith(
-      counterValue: null == counterValue
-          ? _value.counterValue
-          : counterValue // ignore: cast_nullable_to_non_nullable
+      pageIndex: null == pageIndex
+          ? _value.pageIndex
+          : pageIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      list: null == list
+          ? _value.list
+          : list // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ) as $Val);
   }
 }
@@ -64,7 +70,7 @@ abstract class _$$_CounterStateCopyWith<$Res>
       __$$_CounterStateCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int counterValue});
+  $Res call({int pageIndex, List<int> list});
 }
 
 /// @nodoc
@@ -78,13 +84,18 @@ class __$$_CounterStateCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? counterValue = null,
+    Object? pageIndex = null,
+    Object? list = null,
   }) {
     return _then(_$_CounterState(
-      counterValue: null == counterValue
-          ? _value.counterValue
-          : counterValue // ignore: cast_nullable_to_non_nullable
+      pageIndex: null == pageIndex
+          ? _value.pageIndex
+          : pageIndex // ignore: cast_nullable_to_non_nullable
               as int,
+      list: null == list
+          ? _value._list
+          : list // ignore: cast_nullable_to_non_nullable
+              as List<int>,
     ));
   }
 }
@@ -92,14 +103,23 @@ class __$$_CounterStateCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_CounterState implements _CounterState {
-  const _$_CounterState({required this.counterValue});
+  const _$_CounterState({this.pageIndex = 1, final List<int> list = const []})
+      : _list = list;
 
   @override
-  final int counterValue;
+  @JsonKey()
+  final int pageIndex;
+  final List<int> _list;
+  @override
+  @JsonKey()
+  List<int> get list {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_list);
+  }
 
   @override
   String toString() {
-    return 'CounterState(counterValue: $counterValue)';
+    return 'CounterState(pageIndex: $pageIndex, list: $list)';
   }
 
   @override
@@ -107,12 +127,14 @@ class _$_CounterState implements _CounterState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_CounterState &&
-            (identical(other.counterValue, counterValue) ||
-                other.counterValue == counterValue));
+            (identical(other.pageIndex, pageIndex) ||
+                other.pageIndex == pageIndex) &&
+            const DeepCollectionEquality().equals(other._list, _list));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, counterValue);
+  int get hashCode => Object.hash(
+      runtimeType, pageIndex, const DeepCollectionEquality().hash(_list));
 
   @JsonKey(ignore: true)
   @override
@@ -122,11 +144,13 @@ class _$_CounterState implements _CounterState {
 }
 
 abstract class _CounterState implements CounterState {
-  const factory _CounterState({required final int counterValue}) =
+  const factory _CounterState({final int pageIndex, final List<int> list}) =
       _$_CounterState;
 
   @override
-  int get counterValue;
+  int get pageIndex;
+  @override
+  List<int> get list;
   @override
   @JsonKey(ignore: true)
   _$$_CounterStateCopyWith<_$_CounterState> get copyWith =>

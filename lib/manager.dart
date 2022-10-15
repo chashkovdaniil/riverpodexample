@@ -8,23 +8,34 @@ class CounterManager {
 
   CounterManager(this.api, this.stateProvider);
 
+  init() {
+    getData();
+  }
+
   getData() async {
     // Получили данные из апи
     print('Принимаем данные из апи');
-    final data = await api.get();
+    final list = await api.getDataByPage(stateProvider.value.pageIndex);
 
-    stateProvider.setValue(data);
+    // Добавляем данные к существующему списку
+    stateProvider.appendToList(list);
     print('Приняли данные');
   }
 
   sendData() async {
     print('Отправка данные');
     final data = stateProvider.value;
-    await api.send(data.counterValue);
+    await api.send(data.pageIndex);
     print('Отправили данные');
     // отправили данные
   }
 
-  increment() => stateProvider.increment();
+  increment() {
+    stateProvider.increment();
+    getData();
+  }
+
   decrement() => stateProvider.decrement();
+
+  clear() => stateProvider.clear();
 }

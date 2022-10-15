@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpodexample/providers.dart';
 
 void main() {
@@ -24,21 +26,29 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends ConsumerWidget {
+class MyHomePage extends HookConsumerWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(context, ref) {
+    useEffect(() {
+      ref.read(managerProvider).init();
+    }, const []);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Example'),
       ),
-      body: Center(
-        child: TextCounter(),
-      ),
+      body: ListCounter(),
       floatingActionButton: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
+          IconButton(
+            onPressed: () {
+              ref.read(managerProvider).clear();
+            },
+            icon: Icon(Icons.clear),
+          ),
           IconButton(
             onPressed: () {
               ref.read(managerProvider).increment();
@@ -71,12 +81,47 @@ class MyHomePage extends ConsumerWidget {
   }
 }
 
-class TextCounter extends ConsumerWidget {
-  const TextCounter({Key? key}) : super(key: key);
+class ListCounter extends ConsumerStatefulWidget {
+  const ListCounter({Key? key}) : super(key: key);
 
   @override
-  Widget build(context, ref) {
+  ConsumerState<ConsumerStatefulWidget> createState() {
+    return _ListCounterState();
+  }
+}
+
+class _ListCounterState extends ConsumerState<ListCounter> {
+  final controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(context) {
     final state = ref.watch(stateProvider);
-    return Text(state.counterValue.toString());
+    final list = state.list;
+
+    return ListView.builder(
+      itemCount: list.length,
+      controller: controller,
+      itemBuilder: (context, index) {
+        return ListTile(title: Text(index.toString()));
+      },
+    );
+  }
+
+  _scrollListener() {
+    if (controller.position.extentAfter < 500) {
+      ref.read(managerProvider).getData();
+    }
   }
 }

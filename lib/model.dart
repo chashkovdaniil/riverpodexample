@@ -5,6 +5,7 @@ part 'model.freezed.dart';
 @freezed
 class CounterState with _$CounterState {
   const factory CounterState({
-    required int counterValue,
+    @Default(1) int pageIndex,
+    @Default([]) List<int> list,
   }) = _CounterState;
 }
